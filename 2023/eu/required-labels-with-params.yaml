@@ -1,0 +1,32 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "required-labels.example.com"
+spec:
+  paramKind:
+    apiVersion: crds.example.com/v1
+    kind: LabelSetting
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["namespaces"]
+  validations:
+  - expression: "params.requiredLabels.all(r, r.name in object.metadata.labels)"
+    messageExpression: "'Namespace missing required labels: ' + params.requiredLabels.filter(r, !(r.name in object.metadata.labels)).join(', ')"
+  - expression: "params.requiredLabels.filter(r, has(r.allowedValues)).all(r, object.metadata.labels[r.name] in r.allowedValues)"
+    messageExpression: "params.requiredLabels.filter(r, has(r.allowedValues)).filter(r, !(object.metadata.labels[r.name] in r.allowedValues)).map(r, 'label \\'' + r.name + '\\' must be one of: [' + r.allowedValues.join(', ') + ']').join(', ')"
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: "required-labels-binding.example.com"
+spec:
+  policyName: "required-labels.example.com"
+  validationActions: [Deny]
+  paramRef:
+    name: "label-setting.example.com"
+
+
+  # Exercise for the reader: Add a "provisining" environment state that can be transitioned to any other environment state.

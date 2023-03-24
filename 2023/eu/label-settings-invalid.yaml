@@ -1,0 +1,10 @@
+apiVersion: crds.example.com/v1
+kind: LabelSetting
+metadata:
+  name: "label-setting.example.com"
+requiredLabels:
+- name: environment
+  allowedValues:
+  - developer-sandbox
+  - test
+- name: owner

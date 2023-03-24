@@ -1,0 +1,27 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "production-namespaces.example.com"
+spec:
+  # Check all requests on namespaces in the production environment.
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["*"]
+      resources:   ["namespaces"]
+    objectSelector:
+      matchLabels:
+        environment: production
+  validations:
+  - expression: "authorizer.group('authz.example.com').resource('production-namespaces').check(request.operation).allowed()"
+    reason: Forbidden
+    message: "Unauthorized to manage namespaces for the production environment"
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: "production-namespaces-binding.example.com"
+spec:
+  policyName: "production-namespaces.example.com"
+  validationActions: [Deny]

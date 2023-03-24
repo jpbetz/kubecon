@@ -1,0 +1,1 @@
+expression: '!authorizer.group("").resource("namespaces").check("breakglass").allowed()'

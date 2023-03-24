@@ -1,0 +1,25 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "env-label.example.com"
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["namespaces"]
+  matchConditions:
+  - name: exists
+    expression: "'environment' in object.metadata.labels"
+  validations:
+  - expression: "object.metadata.labels['environment'] in ['developer-sandbox', 'test', 'production']"
+    message: "environment not one of the required values: developer-sandbox, test, production"
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: "env-label-binding.example.com"
+spec:
+  policyName: "env-label.example.com"
+  validationActions: [Deny]

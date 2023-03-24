@@ -1,0 +1,23 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "replicalimit-policy.example.com"
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["namepsaces"]
+    objectSelector: 
+    - key: environment
+      operator: Exists
+  matchConditions:
+  - name: exists
+    expression: "'environment' in object.metadata.labels"
+  - name: is-modified
+    expression: >
+        !('environment' in oldObject.metadata.labels) || 
+        object.metadata.labels['environment'] != oldObject.metadata.labels['environment']
+  validations:
+  - expression: "object.metadata.labels['environment'] in ['test', 'staging', 'production']"

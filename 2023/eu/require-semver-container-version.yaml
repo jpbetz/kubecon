@@ -1,0 +1,14 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "require-semver-image-versions.k8s.jpbetz.github.io"
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+  - expression: 'object.spec.containers.all(c, c.image.matches("[0-9]+\\.[0-9]+\\.[0-9]$"))'
+    message: "not all container images have a semver version"

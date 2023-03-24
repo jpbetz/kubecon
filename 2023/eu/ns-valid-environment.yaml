@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "example-1"
+  labels:
+    environment: test
+    owner: jpbetz

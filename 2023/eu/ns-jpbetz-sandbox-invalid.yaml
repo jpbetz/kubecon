@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "jpbetz-sandbox"
+  labels:
+    environment: developer-sandbox
+    owner: jpbetzx
