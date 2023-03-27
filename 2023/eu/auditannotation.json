@@ -1,0 +1,9 @@
+[
+    {
+        "message": "not all images are from the the required container registry: my-registry.io",
+        "policy": "require-container-registry.example.com",
+        "binding": "require-container-registry-binding.example.com",
+        "expressionIndex": 0,
+        "validationActions": ["Warn", "Audit"]
+    }
+]

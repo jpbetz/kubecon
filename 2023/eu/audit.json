@@ -1,0 +1,39 @@
+{
+    "kind": "Event",
+    "apiVersion": "audit.k8s.io/v1",
+    "level": "Metadata",
+    "auditID": "a17d7795-c5c2-4369-84d0-6e999048c3d6",
+    "stage": "ResponseComplete",
+    "requestURI": "/apis/apps/v1/namespaces/default/deployments?fieldManager=kubectl-client-side-apply&fieldValidation=Strict",
+    "verb": "create",
+    "user": {
+      "username": "system:admin",
+      "groups": [
+        "system:masters",
+        "system:authenticated"
+      ]
+    },
+    "sourceIPs": [
+      "::1"
+    ],
+    "userAgent": "kubectl/v1.26.3 (linux/amd64) kubernetes/9e64410",
+    "objectRef": {
+      "resource": "deployments",
+      "namespace": "default",
+      "name": "nginx-deployment",
+      "apiGroup": "apps",
+      "apiVersion": "v1"
+    },
+    "responseStatus": {
+      "metadata": {},
+      "code": 201
+    },
+    "requestReceivedTimestamp": "2023-03-24T15:51:01.293295Z",
+    "stageTimestamp": "2023-03-24T15:51:01.299032Z",
+    "annotations": {
+      "authorization.k8s.io/decision": "allow",
+      "authorization.k8s.io/reason": "",
+      "validation.policy.admission.k8s.io/validation_failure": "[{\"message\":\"not all images are from the the required container registry: my-registry.io\",\"policy\":\"require-container-registry.example.com\",\"binding\":\"require-container-registry-binding.example.com\",\"expressionIndex\":0,\"validationActions\":[\"Warn\",\"Audit\"]}]"
+    }
+  }
+  

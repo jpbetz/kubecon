@@ -11,8 +11,10 @@ spec:
       operations:  ["*"]
       resources:   ["namespaces"]
     objectSelector:
-      matchLabels:
-        environment: production
+      matchExpressions:
+      - key: environment
+        operator: In
+        values: [test, production]
   validations:
   - expression: "authorizer.group('authz.example.com').resource('production-namespaces').check(request.operation).allowed()"
     reason: Forbidden

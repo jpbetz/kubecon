@@ -1,0 +1,22 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "ban-deprecated-gitrepo-volumes.example.com"
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+  - expression: "has(object.spec.volumes) && !object.spec.volumes.exists(v, has(v.gitRepo))"
+    message: "Pod must not use deprecated spec.volumes[].gitRepo field, consider using https://github.com/kubernetes/git-sync instead."
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: "ban-deprecated-gitrepo-volumes-binding.example.com"
+spec:
+  policyName: "ban-deprecated-gitrepo-volumes.example.com"
+  validationActions: [Deny]

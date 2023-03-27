@@ -10,8 +10,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["namespaces"]
   matchConditions:
-  - name: has-labels
-    expression: "['environment', 'owner'].all(l, l in object.metadata.labels)"
   - name: environment-is-sandbox
     expression: "object.metadata.labels['environment'] == 'developer-sandbox'"
   validations:
